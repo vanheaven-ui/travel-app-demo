@@ -4,9 +4,7 @@ import Link from "next/link";
 import { Place } from "../../../types";
 
 type PageProps = {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 };
 
 export async function generateStaticParams() {
@@ -21,8 +19,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function PlaceDetailPage(props: PageProps) {
-  const params = await props.params;
+export default async function PlaceDetailPage({ params }: PageProps) {
+  const resolvedParams = await params;
+
   const response = await fetch("http://localhost:3000/api/places");
 
   if (!response.ok) {
@@ -31,7 +30,7 @@ export default async function PlaceDetailPage(props: PageProps) {
 
   const allPlaces: Place[] = await response.json();
 
-  const place = allPlaces.find((p) => String(p.id) === String(params.id));
+  const place = allPlaces.find((p) => String(p.id) === resolvedParams.id);
 
   if (!place) {
     notFound();
