@@ -15,7 +15,7 @@ export async function generateStaticParams() {
   const places: Place[] = await response.json();
 
   return places.map((place) => ({
-    id: place.id.toString(),
+    params: { id: place.id.toString() },
   }));
 }
 
