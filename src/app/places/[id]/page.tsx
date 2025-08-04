@@ -3,6 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Place } from "../../../types";
 
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
 export async function generateStaticParams() {
   const response = await fetch("http://localhost:3000/api/places");
 
@@ -15,18 +21,17 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function PlaceDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function PlaceDetailPage(props: PageProps) {
+  const params = await props.params;
   const response = await fetch("http://localhost:3000/api/places");
+
   if (!response.ok) {
     throw new Error("Failed to fetch places");
   }
 
   const allPlaces: Place[] = await response.json();
-  const place = allPlaces.find((p) => p.id === Number(params.id));
+
+  const place = allPlaces.find((p) => String(p.id) === String(params.id));
 
   if (!place) {
     notFound();
