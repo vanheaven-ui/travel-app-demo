@@ -3,10 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Place } from "../../../types";
 
-type Props = {
-  params: { id: string };
-};
-
 export async function generateStaticParams() {
   const response = await fetch("http://localhost:3000/api/places");
 
@@ -19,7 +15,11 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function PlaceDetailPage({ params }: Props) {
+export default async function PlaceDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const response = await fetch("http://localhost:3000/api/places");
   if (!response.ok) {
     throw new Error("Failed to fetch places");
