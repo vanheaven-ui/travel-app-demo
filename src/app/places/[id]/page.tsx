@@ -8,9 +8,8 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/places`
-  );
+  const response = await fetch("/api/places");
+
   if (!response.ok) return [];
 
   const places: Place[] = await response.json();
