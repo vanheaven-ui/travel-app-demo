@@ -20,9 +20,7 @@ export async function generateStaticParams() {
 }
 
 export default async function PlaceDetailPage({ params }: Props) {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/places`
-  );
+  const response = await fetch("/api/places");
   if (!response.ok) {
     throw new Error("Failed to fetch places");
   }
