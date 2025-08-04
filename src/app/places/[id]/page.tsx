@@ -8,7 +8,7 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-  const response = await fetch("/api/places");
+  const response = await fetch("http://localhost:3000/api/places");
 
   if (!response.ok) return [];
 
@@ -20,7 +20,7 @@ export async function generateStaticParams() {
 }
 
 export default async function PlaceDetailPage({ params }: Props) {
-  const response = await fetch("/api/places");
+  const response = await fetch("http://localhost:3000/api/places");
   if (!response.ok) {
     throw new Error("Failed to fetch places");
   }
