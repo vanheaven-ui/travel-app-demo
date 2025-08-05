@@ -2,27 +2,26 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Place } from "../../../types";
+import { places as placesData} from "../../../data/places";
 
 type PageProps = {
   params: Promise<{ id: string }>;
 };
 
 export async function generateStaticParams() {
-  const response = await fetch("http://localhost:3000/api/places");
-
-  if (!response.ok) return [];
-
-  const places: Place[] = await response.json();
-
-  return places.map((place) => ({
+  // Use static local data at build time to generate params
+  return placesData.map((place) => ({
     params: { id: place.id.toString() },
   }));
 }
 
 export default async function PlaceDetailPage({ params }: PageProps) {
   const resolvedParams = await params;
+  
+  const baseUrl =
+    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000";
 
-  const response = await fetch("http://localhost:3000/api/places");
+  const response = await fetch(`${baseUrl}/api/places`);
 
   if (!response.ok) {
     throw new Error("Failed to fetch places");
